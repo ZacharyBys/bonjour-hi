@@ -26,6 +26,7 @@ class Recorder extends Component {
     stopRecord = () => {
         this.props.abortListening();
         this.setState({record: false});
+        this.props.resetTranscript();
     }
 
 
@@ -47,8 +48,8 @@ class Recorder extends Component {
         return (
             <div>
                 <Button 
-                    color={this.state.record ? "red" : "white"} 
-                    circular icon={this.state.record ? 'microphone slash' : 'microphone'}
+                    color={this.state.record ? "green" : "white"} 
+                    circular icon='microphone'
                     onClick={this.state.record ? this.stopRecord : this.startRecord}
                 />
                 <Header>{transcript}</Header>
