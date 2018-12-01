@@ -6,6 +6,8 @@ import axios from 'axios';
 import {Button} from 'semantic-ui-react';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import { Redirect } from 'react-router';
+import Recorder from '../../components/Recorder/Recorder';
+
 
 class App extends Component {
 
@@ -90,6 +92,8 @@ class App extends Component {
             </CopyToClipboard>
             <Header as='h1'> {this.state.name} Room</Header>
             <button onClick={() => this.leaveRoom()}>leave room</button>
+            <Header as='h1'>Room</Header>
+            <Recorder/>
         </div>
     );
   }
