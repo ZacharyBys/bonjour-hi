@@ -7,7 +7,7 @@ import {Button} from 'semantic-ui-react';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import * as axios from 'axios';
 
-const accessToken = 'ya29.GltlBhCAmHwtzNTbQfKboVPtq2PW_C3m1rrU7NvI50JSifIc-NuKksiBdnvbHtTXyQUeWeZTuzPEq7VV7iivHMkBy6_-aU01wwtwxBJwjCFHTXyQYSeGw4h6rBXm';
+const accessToken = "ya29.GltlBqsoXOOKESdRfzYYxrrkldH09KEPdxF_Dx4XFZQG8Q_mYJ6sEXl1w2UxBU-UWgh8krWQfIrRRIMvVirOeVr217htXKcObBq64oHKZveeVSvX2ADOHXDpc_5u";
 
 class App extends Component {
 
@@ -115,7 +115,7 @@ console.log(name);
               autoPlay
               controls
             />
-            {this.state.base64File}
+            {/*this.state.base64File*/}
         </div>
     );
   }
