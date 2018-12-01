@@ -9,6 +9,8 @@ const propTypes = {
     // Props injected by SpeechRecognition
     transcript: PropTypes.string,
     resetTranscript: PropTypes.func,
+    startListening: PropTypes.func,
+    stopListening: PropTypes.func,
     browserSupportsSpeechRecognition: PropTypes.bool
 }
 
@@ -39,10 +41,10 @@ class Recorder extends Component {
     }
 
     stopRecord = () => {
-        this.props.abortListening();
         console.log("stop recording");
         this.setState({record: false});
         this.props.resetTranscript();
+        this.props.stopListening();
     }
 
     setLanguage(language) {
