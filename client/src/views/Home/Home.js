@@ -3,7 +3,7 @@ import { Header } from 'semantic-ui-react';
 import { Button } from 'semantic-ui-react';
 import { Input } from 'semantic-ui-react';
 import * as axios from 'axios';
-import {Redirect} from 'react-router';
+import { Redirect } from 'react-router';
 
 
 class App extends Component {

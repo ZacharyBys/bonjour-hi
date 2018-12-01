@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import { Header } from 'semantic-ui-react';
 import socketIOClient from "socket.io-client";
 import axios from 'axios';
+import { Redirect } from 'react-router';
+
 
 class App extends Component {
 
   state = {
     socket: socketIOClient("http://127.0.0.1:5000/"),
+    id: '',
+    name: ''
   }
 
   joinRoom(id, name) {
@@ -23,6 +27,12 @@ class App extends Component {
     .catch(error => {
       console.log(error);
     });
+  }
+
+  leaveRoom() {
+    const { socket, id, name } = this.state;
+    socket.emit("leave", { room: id, user: name });
+    this.setState({ redirect: true });
   }
 
   componentDidMount() {
@@ -44,12 +54,15 @@ class App extends Component {
     });
   }
 
-
-
   render() {
+    const { name, redirect, roomID } = this.state;
+    if (redirect) {
+      return <Redirect to={`/`} />;
+    }
     return (
         <div>
             <Header as='h1'>Room</Header>
+            <button onClick={() => this.leaveRoom()}>leave room</button>
         </div>
     );
   }
