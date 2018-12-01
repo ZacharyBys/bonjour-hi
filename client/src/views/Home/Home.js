@@ -3,8 +3,8 @@ import { Header } from 'semantic-ui-react';
 import { Button } from 'semantic-ui-react';
 import { Input } from 'semantic-ui-react';
 import * as axios from 'axios';
-import {Redirect} from 'react-router';
-import swal from 'sweetalert2';
+import { Redirect } from 'react-router';
+
 
 class App extends Component {
   state = {
@@ -29,10 +29,10 @@ onCreateRoom(){
   });
 }
 changeName(event){
-this.setState({name: event.target.value})
+  this.setState({name: event.target.value})
 }
 changeRoomID(event){
-this.setState({roomID: event.target.value})
+  this.setState({roomID: event.target.value})
 }
 
 rendering(){
