@@ -1,3 +1,4 @@
+import './Recorder.css';
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { Button, Header} from 'semantic-ui-react';
@@ -72,14 +73,14 @@ class Recorder extends Component {
         }
 
         return (
-            <div>
+            <React.Fragment>
                 <Button 
                     color={record ? "green" : "grey"} 
                     circular icon='microphone'
                     onClick={record ? this.stopRecord : this.startRecord}
+                    className="recorder-button"
                 />
-                <Header>{transcript}</Header>
-            </div>
+            </React.Fragment>
         );
     }
 }

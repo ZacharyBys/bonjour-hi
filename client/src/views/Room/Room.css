@@ -1,0 +1,30 @@
+.ui.grid{
+    margin-top: 10px;
+}
+.grid-column-center-aligned{
+    text-align: center !important;
+    margin: 20px 0;
+}
+.react-audio-player{
+    display: none;
+}
+.ui.header.sharing-incitation{
+    margin-bottom: 0px;
+}
+.ui.header.sharing-link{
+    margin: 0;
+}
+.link{
+    color: blue;
+    text-decoration: underline;
+}
+.ui.buttons.language-buttons{
+    margin-top:20px;
+    margin-bottom: 10px;
+}
+.ui.header.your-name{
+    padding-right: 8px;
+}
+.icon.button-icon{
+    cursor: pointer;
+}

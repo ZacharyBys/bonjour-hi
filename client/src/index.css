@@ -12,3 +12,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.app-container{
+  width: 800px;
+  padding:40px;
+  margin: 5vh auto 5vh auto;
+}

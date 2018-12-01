@@ -1,12 +1,18 @@
+import './Room.css';
 import React, { Component } from 'react';
-import { Header } from 'semantic-ui-react';
+import { Header, GridRow, Icon, IconGroup } from 'semantic-ui-react';
 import ReactAudioPlayer from 'react-audio-player';
 import socketIOClient from "socket.io-client";
 import Swal from 'sweetalert2';
-import {Button, Flag} from 'semantic-ui-react';
+import {Button, Image, Grid} from 'semantic-ui-react';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import { Redirect } from 'react-router';
 import Recorder from '../../components/Recorder/Recorder';
+import BabelHeader from '../../components/BabelHeader/BabelHeader';
+import flagfr from '../../assets/fr.png';
+import flagen from '../../assets/en.png';
+import flagde from '../../assets/de.png';
+import flages from '../../assets/es.png';
 import * as axios from 'axios';
 import 'google-translate';
 
@@ -156,30 +162,50 @@ class App extends Component {
       return <Redirect to={`/`} />;
     }
     return (  
-        <div>
-          <p>share this url with all your friends!</p>
-          <p> http://localhost:3000/room?id={this.state.id}</p>
-            <CopyToClipboard text={`http://localhost:3000/room?id=${this.state.id}`}
-              onCopy={() => this.setState({copied: true})}>
-              <Button>Copy to clipboard</Button>
-            </CopyToClipboard>
-            <Header as='h1'> {this.state.name} Room</Header>
-            <ReactAudioPlayer
-              src={'data:audio/mp3;base64,'+this.state.base64File}
-              autoPlay
-              controls
-            />
-            {/*this.state.base64File*/}
-            <Button onClick={() => this.leaveRoom()}>leave room</Button>
+        <div className="app-container">
+          <BabelHeader></BabelHeader>
+          <Header as='h2' className="sharing-incitation">Want your friends to join?</Header>
+          <span className="ui header sharing-link">Share this url: <span className="link">http://localhost:3000/room?id={this.state.id}</span> </span>
+          <CopyToClipboard text={`http://localhost:3000/room?id=${this.state.id}`}
+            onCopy={() => this.setState({copied: true})}>
+              <Icon size='large' name='copy' className="button-icon"/>
+          </CopyToClipboard>
+          {/* <Grid columns={2}>
+          <Grid.Column>
 
-            <Button.Group>
-              <Button active={lang === 'fr'} onClick={() => this.setLanguage('fr')}><Flag name='france'/></Button>
-              <Button active={lang === 'en'} onClick={() => this.setLanguage('en')}><Flag name='us' /></Button>
-              <Button active={lang === 'es'} onClick={() => this.setLanguage('es')}><Flag name='spain' /></Button>
-              <Button active={lang === 'de'} onClick={() => this.setLanguage('de')}><Flag name='germany' /></Button>
-            </Button.Group>
-            <Recorder id={this.state.id} name={this.state.name} lang={lang}/>
+          </Grid.Column>
+          </Grid> */}
+          <br></br>
+          <br></br>
+          <br></br>
+
+
+          <span className="ui header your-name"> Your name: {this.state.name}</span>
+          <Button onClick={() => this.leaveRoom()}>Leave room</Button>
+
+
+          
+          {/*this.state.base64File*/}
+          
+
+        <Grid centered columns={4}>
+        <div className="grid-column-center-aligned">
+          <Image src="/skype-example.png" height='300'></Image>
+          <Button.Group className="language-buttons">
+            <Button active={lang === 'fr'} onClick={() => this.setLanguage('fr')}><Image src={flagfr} size='mini'/></Button>
+            <Button active={lang === 'en'} onClick={() => this.setLanguage('en')}><Image src={flagen} size='mini'/></Button>
+            <Button active={lang === 'es'} onClick={() => this.setLanguage('es')}><Image src={flages} size='mini'/></Button>
+            <Button active={lang === 'de'} onClick={() => this.setLanguage('de')}><Image src={flagde} size='mini'/></Button>
+          </Button.Group>
+          <Recorder id={this.state.id} name={this.state.name} lang={lang}/>
         </div>
+        </Grid>
+        <ReactAudioPlayer
+            src={'data:audio/mp3;base64,'+this.state.base64File}
+            autoPlay
+            controls
+          />
+      </div>
     );
   }
 }
