@@ -19,6 +19,11 @@ def create_room():
     return jsonify({'room':id, 'error': ''})
 
 
+@api_bp.route('/room/join', methods=["POST"])
+def join_room():
+    return jsonify({'data': 'success', 'error' : ''})
+
+
 def create_unique_room():
     global UNIQUE_ROOMS
     while True:
