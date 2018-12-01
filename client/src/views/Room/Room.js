@@ -31,7 +31,7 @@ class App extends Component {
   buttonClick(){
     console.log('hi');
   }
-  otherFunction(data){
+  textToTranslatedVoice(data){
     if (data.user !== this.state.name) {
       googleTranslate.translate(data.msg, this.state.lang, (err, translation) => {
         console.log(translation.translatedText);
@@ -145,7 +145,7 @@ class App extends Component {
     });
 
     socket.on("receiveTranscript", (data) => {
-        this.otherFunction(data)
+        this.textToTranslatedVoice(data)
       }
     );
   }
