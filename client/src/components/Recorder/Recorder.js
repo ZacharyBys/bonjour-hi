@@ -57,8 +57,9 @@ class Recorder extends Component {
     }
 
     shouldComponentUpdate(nextProps) {
-        if (this.state.lang != nextProps.lang) {
+        if (this.state.lang !== nextProps.lang) {
             this.setState({lang: nextProps.lang});
+            this.props.resetTranscript();
         }
 
         return true;

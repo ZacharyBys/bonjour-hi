@@ -100,7 +100,7 @@ class App extends Component {
               <Button>Copy to clipboard</Button>
             </CopyToClipboard>
             <Header as='h1'> {this.state.name} Room</Header>
-            <button onClick={() => this.leaveRoom()}>leave room</button>
+            <Button onClick={() => this.leaveRoom()}>leave room</Button>
             <Header as='h1'>Room</Header>
             <Button.Group>
               <Button active={lang === 'fr'} onClick={() => this.setLanguage('fr')}><Flag name='france'/></Button>
