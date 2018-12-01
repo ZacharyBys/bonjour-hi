@@ -27,7 +27,101 @@ class App extends Component {
     id: '',
     name: '',
     lang: 'en',
-    messages: []
+    messages: [
+      {
+        name: 'Bob',
+        message: 'this is a dump test'
+      },
+      {
+        name: 'Chris',
+        message: 'this is a dump test2'
+      },
+      {
+        name: 'Kevin',
+        message: 'this is a dump test3'
+      },
+      {
+        name: 'Bob',
+        message: 'this is a dump test5'
+      },
+      {
+        name: 'Bob',
+        message: 'this is a dump test'
+      },
+      {
+        name: 'Chris',
+        message: 'this is a dump test2'
+      },
+      {
+        name: 'Kevin',
+        message: 'this is a dump test3'
+      },
+      {
+        name: 'Bob',
+        message: 'this is a dump test5'
+      },
+      {
+        name: 'Bob',
+        message: 'this is a dump test'
+      },
+      {
+        name: 'Chris',
+        message: 'this is a dump test2'
+      },
+      {
+        name: 'Kevin',
+        message: 'this is a dump test3'
+      },
+      {
+        name: 'Bob',
+        message: 'this is a dump test5'
+      },      {
+        name: 'Bob',
+        message: 'this is a dump test'
+      },
+      {
+        name: 'Chris',
+        message: 'this is a dump test2'
+      },
+      {
+        name: 'Kevin',
+        message: 'this is a dump test3'
+      },
+      {
+        name: 'Bob',
+        message: 'this is a dump test5'
+      },      {
+        name: 'Bob',
+        message: 'this is a dump test'
+      },
+      {
+        name: 'Chris',
+        message: 'this is a dump test2'
+      },
+      {
+        name: 'Kevin',
+        message: 'this is a dump test3'
+      },
+      {
+        name: 'Bob',
+        message: 'this is a dump test5'
+      },      {
+        name: 'Bob',
+        message: 'this is a dump test'
+      },
+      {
+        name: 'Chris',
+        message: 'this is a dump test2'
+      },
+      {
+        name: 'Kevin',
+        message: 'this is a dump test3'
+      },
+      {
+        name: 'Bob',
+        message: 'this is a dump test5'
+      }
+    ]
   }
 
   setLanguage(language) {
@@ -40,8 +134,13 @@ class App extends Component {
   textToTranslatedVoice(data){
     if (data.user !== this.state.name || true) {
       googleTranslate.translate(data.msg, this.state.lang, (err, translation) => {
-        console.log(translation.translatedText);
-        let newMessages = [{name:data.user, message: translation.translatedText}].concat(this.state.messages); 
+        // console.log(translation.translatedText);
+
+        let newMessages = this.state.messages.concat({name:data.user, message: translation.translatedText})
+
+        // let tmp = this.state.messages.map(x => x);
+        
+        // tmp.unshift({name:data.user, message: translation.translatedText})
         this.setState({
           messages: newMessages
         })
@@ -152,7 +251,17 @@ class App extends Component {
     });
 
     socket.on("status", function(data) {
-      console.log(data);
+      const toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 3000
+      });
+      
+      toast({
+        type: 'success',
+        title: `${data.msg}`
+      });
     });
 
     socket.on("receiveTranscript", (data) => {
@@ -161,55 +270,87 @@ class App extends Component {
     );
   }
 
+  clickCopy() {
+    this.setState({copied: true})
+    const toast = Swal.mixin({
+      toast: true,
+      position: 'top',
+      showConfirmButton: false,
+      timer: 3000
+    });
+    
+    toast({
+      type: 'success',
+      title: 'Copy URL link!'
+    });
+  
+  }
+
   render() {
     const { name, redirect, roomID, lang } = this.state;
     if (redirect) {
       return <Redirect to={`/`} />;
     }
+
     return (  
-        <div className="app-container">
-          <BabelHeader></BabelHeader>
-          <Header as='h2' className="sharing-incitation">Want your friends to join?</Header>
-          <span className="ui header sharing-link">Share this url: <span className="link">http://localhost:3000/room?id={this.state.id}</span> </span>
-          <CopyToClipboard text={`http://localhost:3000/room?id=${this.state.id}`}
-            onCopy={() => this.setState({copied: true})}>
-              <Icon size='large' name='copy' className="button-icon"/>
-          </CopyToClipboard>
-          {/* <Grid columns={2}>
-          <Grid.Column>
+        <div className="room__container">
 
-          </Grid.Column>
-          </Grid> */}
-          <br></br>
-          <br></br>
-          <br></br>
-
-
-          <span className="ui header your-name"> Your name: {this.state.name}</span>
-          <Button onClick={() => this.leaveRoom()}>Leave room</Button>
-
-
-          
-          {/*this.state.base64File*/}
-          
-
-        <Grid centered columns={4}>
-        <div className="grid-column-center-aligned">
-          <Image src="/skype-example.png" height='300'></Image>
-          <Button.Group className="language-buttons">
-            <Button active={lang === 'fr'} onClick={() => this.setLanguage('fr')}><Image src={flagfr} size='mini'/></Button>
-            <Button active={lang === 'en'} onClick={() => this.setLanguage('en')}><Image src={flagen} size='mini'/></Button>
-            <Button active={lang === 'es'} onClick={() => this.setLanguage('es')}><Image src={flages} size='mini'/></Button>
-            <Button active={lang === 'de'} onClick={() => this.setLanguage('de')}><Image src={flagde} size='mini'/></Button>
-          </Button.Group>
-          <Recorder id={this.state.id} name={this.state.name} lang={lang}/>
-          <Container>
-              {
-                this.state.messages.map(el => <Message visible key={this.state.messages.indexOf(el)}> {el.name} : {el.message} </Message>)
-              }
-          </Container>
-        </div>
-        </Grid>
+          {/* {
+            this.state.messages.map(x => <div><span>{x.name}: {x.message}</span></div>)
+          } */}
+          <Grid celled style={{minHeight: 'calc(100vh - 5vh)', marginTop: '0' }}>
+            <Grid.Row>
+              <Grid.Column width={12}>
+                <div className="room__header">
+                  <BabelHeader></BabelHeader>
+                  <div className="share-link">
+                    <span className="ui header sharing-link">Share link: <span className="link">http://localhost:3000/room?id={this.state.id}</span> </span>
+                    <CopyToClipboard text={`http://localhost:3000/room?id=${this.state.id}`}
+                      onCopy={() => this.clickCopy()}>
+                        <Icon size='big' name='copy' className="button-icon"/>
+                    </CopyToClipboard>
+                  </div>
+                  <div>
+                  <Button color='yellow' onClick={() => this.leaveRoom()}>Leave room</Button>
+                  </div>
+                </div>
+                <Grid centered columns={4}>
+                  <div className="grid-column-center-aligned">
+                    <Image src="/skype-example.png" height='300'></Image>
+                    <Button.Group className="language-buttons">
+                      <Button active={lang === 'fr'} onClick={() => this.setLanguage('fr')}><Image src={flagfr} size='mini'/></Button>
+                      <Button active={lang === 'en'} onClick={() => this.setLanguage('en')}><Image src={flagen} size='mini'/></Button>
+                      <Button active={lang === 'es'} onClick={() => this.setLanguage('es')}><Image src={flages} size='mini'/></Button>
+                      <Button active={lang === 'de'} onClick={() => this.setLanguage('de')}><Image src={flagde} size='mini'/></Button>
+                    </Button.Group>
+                    <div style={{marginTop: '25px'}}>
+                      <Recorder id={this.state.id} name={this.state.name} lang={lang}/>
+                    </div>
+                  </div>
+                </Grid>
+              </Grid.Column>
+              <Grid.Column width={4} style={{maxHeight: '90vh', overflowY: 'scroll'}}>
+                <Container>
+                  {
+                    this.state.messages.map((el, index) => {
+                      return el.name.toLowerCase() === this.state.name.toLowerCase() ? 
+                        <div className="msg__you__wrapper">
+                          <Message compact key={el.message} className="msg__you__body">
+                            {el.message}
+                          </Message>
+                        </div>
+                        :
+                        <div className="msg__others__wrapper">
+                          <Message compact key={el.message} className="msg__others__body">
+                            {el.name}:  {el.message}
+                          </Message>
+                        </div>
+                    })
+                  }
+                </Container>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
         <ReactAudioPlayer
             src={'data:audio/mp3;base64,'+this.state.base64File}
             autoPlay

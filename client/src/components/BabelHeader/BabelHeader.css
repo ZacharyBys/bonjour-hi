@@ -1,5 +1,6 @@
 .ui.header.babel-header{
-    text-align: center;
-    font-size: 5rem;
+    text-align: left;
+    font-size: 3rem;
     color: #5C6AC4;
+    font-style: italic;
 }

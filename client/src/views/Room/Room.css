@@ -1,3 +1,6 @@
+.room__container {
+    min-height: calc(100vh - 10px) 
+}
 .ui.grid{
     margin-top: 10px;
 }
@@ -11,11 +14,18 @@
 .ui.header.sharing-incitation{
     margin-bottom: 0px;
 }
+.share-link {
+    margin-top: 10px;
+    font-size: 1em;
+}
 .ui.header.sharing-link{
-    margin: 0;
+    margin: 0px;
+    padding: 6px 12px;
+    background-color: #f8f8f9;
+    border: 1px solid #637381;
+    border-radius: 1.3em !important;
 }
 .link{
-    color: blue;
     text-decoration: underline;
 }
 .ui.buttons.language-buttons{
@@ -27,4 +37,33 @@
 }
 .icon.button-icon{
     cursor: pointer;
+}
+
+.msg__others__wrapper {
+    display: flex;
+}
+
+.msg__you__wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+.msg__others__body {
+    background-color: #f1f0f0 !important;
+    color: rgba(0, 0, 0, 1) !important;
+    margin: 10px 0 !important;
+    padding: 6px 12px !important;
+    border-radius: 1.3em !important;
+    text-align: left;
+}
+.msg__you__body {
+    background-color: #0084ff !important;
+    color: #fff !important;
+    margin: 10px 0 !important;
+    padding: 6px 12px !important;
+    border-radius: 1.3em !important;
+    text-align: right;
+}
+.room__header {
+    display: flex;
+    justify-content: space-between !important;
 }
