@@ -10,7 +10,7 @@ import Recorder from '../../components/Recorder/Recorder';
 import * as axios from 'axios';
 import 'google-translate';
 
-const accessToken = "ya29.GltlBqsoXOOKESdRfzYYxrrkldH09KEPdxF_Dx4XFZQG8Q_mYJ6sEXl1w2UxBU-UWgh8krWQfIrRRIMvVirOeVr217htXKcObBq64oHKZveeVSvX2ADOHXDpc_5u";
+const accessToken = "ya29.GltlBlWfzsHiHu3BS-PL2oiD1Ccmlw0gR-QujaMkaQrWaRXySfo72N_BoQ7K9buaWnks7LVl2gtXhI5QbUGj3uoTR5MXPen-hx3A5Cdxj2lBLkH7odjisnOcQJd3";
 
 const googleTranslate = require('google-translate')(process.env.REACT_APP_API_KEY);
 
@@ -19,7 +19,6 @@ class App extends Component {
   state = {
     base64File :"",
     socket: socketIOClient("http://127.0.0.1:5000/"),
-
     id: '',
     name: '',
     lang: 'en'
@@ -32,33 +31,57 @@ class App extends Component {
   buttonClick(){
     console.log('hi');
   }
-  otherFunction(){
-    let context = new AudioContext();
-    var base64Buffer = "";
-    let config = {
-      headers: {
-        'Authorization': 'Bearer ' + accessToken
-      }
+  otherFunction(data){
+    if (data.user !== this.state.name) {
+      googleTranslate.translate(data.msg, this.state.lang, (err, translation) => {
+        console.log(translation.translatedText);
+        const text = translation.translatedText;
+        let context = new AudioContext();
+        let spokenLanguage = 'en-GB';
+        //en-US, de-DE, es-ES, fr-FR
+        switch (this.state.lang) {
+            case 'en':
+                spokenLanguage = 'en-GB';
+                break;
+            case 'de':
+                spokenLanguage = 'de-DE';
+                break;
+            case 'es':
+                spokenLanguage = 'es-ES';
+                break;
+            case 'fr':
+                spokenLanguage = 'fr-FR';
+                break;
+            default: 
+            spokenLanguage = 'en-GB';
+        }
+        var base64Buffer = "";
+        let config = {
+          headers: {
+            'Authorization': 'Bearer ' + accessToken
+          }
+        }
+        axios.post('https://texttospeech.googleapis.com/v1beta1/text:synthesize', { 
+          'input':{
+            'text': text
+          },
+          'voice':{
+            'languageCode':spokenLanguage,
+            'name':spokenLanguage + '-Standard-A',
+            'ssmlGender':'FEMALE'
+          },
+          'audioConfig':{
+            'audioEncoding':'MP3'
+          }
+        }, config)
+        .then((response) => {
+          this.setState({base64File: response.data.audioContent});
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+      });
     }
-    axios.post('https://texttospeech.googleapis.com/v1beta1/text:synthesize', { 
-      'input':{
-        'text':'I\'ve added the event to your calendar.'
-      },
-      'voice':{
-        'languageCode':'en-gb',
-        'name':'en-GB-Standard-A',
-        'ssmlGender':'FEMALE'
-      },
-      'audioConfig':{
-        'audioEncoding':'MP3'
-      }
-    }, config)
-    .then((response) => {
-      this.setState({base64File: response.data.audioContent});
-    })
-    .catch(function (error) {
-        console.log(error);
-    });
   }
 
   joinRoom(id, name) {
@@ -121,13 +144,9 @@ class App extends Component {
       console.log(data);
     });
 
-    socket.on("receiveTranscript", function(data) {
-      if (data.user !== this.state.name) {
-        googleTranslate.translate(data.msg, this.state.lang, function(err, translation) {
-          console.log(translation.translatedText);
-        });
+    socket.on("receiveTranscript", (data) => {
+        this.otherFunction(data)
       }
-    }.bind(this)
     );
   }
 
@@ -145,7 +164,6 @@ class App extends Component {
               <Button>Copy to clipboard</Button>
             </CopyToClipboard>
             <Header as='h1'> {this.state.name} Room</Header>
-            <Button onClick={() => this.otherFunction()}>Click here to fetch</Button>
             <ReactAudioPlayer
               src={'data:audio/mp3;base64,'+this.state.base64File}
               autoPlay
