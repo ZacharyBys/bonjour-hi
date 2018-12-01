@@ -1,10 +1,9 @@
 import './Room.css';
 import React, { Component } from 'react';
-import { Header, GridRow, Icon, IconGroup } from 'semantic-ui-react';
+import { Header, Container, Button, Flag, Message, GridRow, Icon, IconGroup, Image, Grid  } from 'semantic-ui-react';
 import ReactAudioPlayer from 'react-audio-player';
 import socketIOClient from "socket.io-client";
 import Swal from 'sweetalert2';
-import {Button, Image, Grid} from 'semantic-ui-react';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import { Redirect } from 'react-router';
 import Recorder from '../../components/Recorder/Recorder';
@@ -27,7 +26,8 @@ class App extends Component {
     socket: socketIOClient("http://127.0.0.1:5000/"),
     id: '',
     name: '',
-    lang: 'en'
+    lang: 'en',
+    messages: []
   }
 
   setLanguage(language) {
@@ -38,9 +38,14 @@ class App extends Component {
     console.log('hi');
   }
   textToTranslatedVoice(data){
-    if (data.user !== this.state.name) {
+    if (data.user !== this.state.name || true) {
       googleTranslate.translate(data.msg, this.state.lang, (err, translation) => {
         console.log(translation.translatedText);
+        let newMessages = [{name:data.user, message: translation.translatedText}].concat(this.state.messages); 
+        this.setState({
+          messages: newMessages
+        })
+        console.log(this.state.messages);
         const text = translation.translatedText;
         let context = new AudioContext();
         let spokenLanguage = 'en-GB';
@@ -198,6 +203,11 @@ class App extends Component {
             <Button active={lang === 'de'} onClick={() => this.setLanguage('de')}><Image src={flagde} size='mini'/></Button>
           </Button.Group>
           <Recorder id={this.state.id} name={this.state.name} lang={lang}/>
+          <Container>
+              {
+                this.state.messages.map(el => <Message visible key={this.state.messages.indexOf(el)}> {el.name} : {el.message} </Message>)
+              }
+          </Container>
         </div>
         </Grid>
         <ReactAudioPlayer
