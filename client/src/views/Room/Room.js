@@ -3,18 +3,25 @@ import { Header } from 'semantic-ui-react';
 import socketIOClient from "socket.io-client";
 import Swal from 'sweetalert2';
 import axios from 'axios';
-import {Button} from 'semantic-ui-react';
+import {Button, Flag} from 'semantic-ui-react';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import { Redirect } from 'react-router';
 import Recorder from '../../components/Recorder/Recorder';
+import 'google-translate';
 
+const googleTranslate = require('google-translate')(process.env.REACT_APP_API_KEY);
 
 class App extends Component {
 
   state = {
     socket: socketIOClient("http://localhost:5000/"),
     id: '',
-    name: ''
+    name: '',
+    lang: 'en'
+  }
+
+  setLanguage(language) {
+    this.setState({lang: language});
   }
 
   joinRoom(id, name) {
@@ -41,6 +48,7 @@ class App extends Component {
     socket.emit("leave", { room: id, user: name });
     this.setState({ redirect: true });
   }
+
   componentDidMount() {
     const { socket } = this.state;
     const urlParams = new URLSearchParams(window.location.search);
@@ -77,12 +85,17 @@ class App extends Component {
     });
 
     socket.on("receiveTranscript", function(data) {
-      console.log(data);
-    });
+      if (data.user !== this.state.name) {
+        googleTranslate.translate(data.msg, this.state.lang, function(err, translation) {
+          console.log(translation.translatedText);
+        });
+      }
+    }.bind(this)
+    );
   }
 
   render() {
-    const { name, redirect, roomID } = this.state;
+    const { name, redirect, roomID, lang } = this.state;
     if (redirect) {
       return <Redirect to={`/`} />;
     }
@@ -95,9 +108,15 @@ class App extends Component {
               <Button>Copy to clipboard</Button>
             </CopyToClipboard>
             <Header as='h1'> {this.state.name} Room</Header>
-            <button onClick={() => this.leaveRoom()}>leave room</button>
+            <Button onClick={() => this.leaveRoom()}>leave room</Button>
             <Header as='h1'>Room</Header>
-            <Recorder id={this.state.id} name={this.state.name}/>
+            <Button.Group>
+              <Button active={lang === 'fr'} onClick={() => this.setLanguage('fr')}><Flag name='france'/></Button>
+              <Button active={lang === 'en'} onClick={() => this.setLanguage('en')}><Flag name='us' /></Button>
+              <Button active={lang === 'es'} onClick={() => this.setLanguage('es')}><Flag name='spain' /></Button>
+              <Button active={lang === 'de'} onClick={() => this.setLanguage('de')}><Flag name='germany' /></Button>
+            </Button.Group>
+            <Recorder id={this.state.id} name={this.state.name} lang={lang}/>
         </div>
     );
   }
