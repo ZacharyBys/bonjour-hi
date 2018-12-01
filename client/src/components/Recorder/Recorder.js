@@ -3,7 +3,6 @@ import { PropTypes } from 'prop-types';
 import { Button, Header} from 'semantic-ui-react';
 import SpeechRecognition from 'react-speech-recognition';
 import socketIOClient from "socket.io-client";
-import 'google-translate';
 
 const propTypes = {
     // Props injected by SpeechRecognition
@@ -14,8 +13,6 @@ const propTypes = {
     browserSupportsSpeechRecognition: PropTypes.bool
 }
 
-const googleTranslate = require('google-translate')(process.env.REACT_APP_API_KEY);
-
 class Recorder extends Component {
     constructor(props) {
         super(props);
@@ -24,14 +21,6 @@ class Recorder extends Component {
           record: true,
           lang: this.props.lang,
         }
-    }
-
-    testTranslate = () => {
-        const { lang } = this.state;
-        googleTranslate.translate('Hello this is a test', lang, function(err, translation) {
-            console.log(translation.translatedText);
-            // =>  { translatedText: 'Hallo', originalText: 'Hello', detectedSourceLanguage: 'en' }
-        });
     }
 
     startRecord = () => {

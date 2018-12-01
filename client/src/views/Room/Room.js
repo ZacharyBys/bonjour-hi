@@ -7,7 +7,9 @@ import {Button, Flag} from 'semantic-ui-react';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import { Redirect } from 'react-router';
 import Recorder from '../../components/Recorder/Recorder';
+import 'google-translate';
 
+const googleTranslate = require('google-translate')(process.env.REACT_APP_API_KEY);
 
 class App extends Component {
 
@@ -83,6 +85,10 @@ class App extends Component {
 
     socket.on("receiveTranscript", function(data) {
       console.log(data);
+      const { lang } = this.state;
+      googleTranslate.translate(data, lang, function(err, translation) {
+          console.log(translation.translatedText);
+      });
     });
   }
 
