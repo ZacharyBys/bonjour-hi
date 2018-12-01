@@ -8,10 +8,7 @@
     "google-translate": "^2.2.0",
     "prop-types": "^15.6.2",
     "react": "^16.6.3",
-<<<<<<< HEAD
     "react-audio-player": "^0.11.0",
-=======
->>>>>>> 922abd873fa39946b5c40339f2c83c3ac54993a6
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.6.3",
     "react-mic": "^12.2.3",
