@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { Button, Header, Flag } from 'semantic-ui-react';
+import { Button, Header} from 'semantic-ui-react';
 import SpeechRecognition from 'react-speech-recognition';
 import socketIOClient from "socket.io-client";
 import 'google-translate';
@@ -22,7 +22,7 @@ class Recorder extends Component {
         this.state = {
         socket: socketIOClient("http://localhost:5000/"),
           record: true,
-          lang: 'en',
+          lang: this.props.lang,
         }
     }
 
@@ -47,11 +47,6 @@ class Recorder extends Component {
         this.props.stopListening();
     }
 
-    setLanguage(language) {
-        this.setState({lang: language});
-        this.props.resetTranscript();
-    }
-
     sendMessage(transcript) {
         const { socket, id, name } = this.props;
         this.state.socket.emit("originalTranscript", {
@@ -59,6 +54,14 @@ class Recorder extends Component {
             user: name,
             transcript: transcript
         });
+    }
+
+    shouldComponentUpdate(nextProps) {
+        if (this.state.lang != nextProps.lang) {
+            this.setState({lang: nextProps.lang});
+        }
+
+        return true;
     }
 
     render() {
@@ -85,12 +88,6 @@ class Recorder extends Component {
                     circular icon='microphone'
                     onClick={record ? this.stopRecord : this.startRecord}
                 />
-                <Button.Group>
-                    <Button active={lang === 'fr'} onClick={() => this.setLanguage('fr')}><Flag name='france'/></Button>
-                    <Button active={lang === 'en'} onClick={() => this.setLanguage('en')}><Flag name='us' /></Button>
-                    <Button active={lang === 'es'} onClick={() => this.setLanguage('es')}><Flag name='spain' /></Button>
-                    <Button active={lang === 'de'} onClick={() => this.setLanguage('de')}><Flag name='germany' /></Button>
-                </Button.Group>
                 <Header>{transcript}</Header>
             </div>
         );

@@ -3,7 +3,7 @@ import { Header } from 'semantic-ui-react';
 import socketIOClient from "socket.io-client";
 import Swal from 'sweetalert2';
 import axios from 'axios';
-import {Button} from 'semantic-ui-react';
+import {Button, Flag} from 'semantic-ui-react';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import { Redirect } from 'react-router';
 import Recorder from '../../components/Recorder/Recorder';
@@ -14,7 +14,12 @@ class App extends Component {
   state = {
     socket: socketIOClient("http://localhost:5000/"),
     id: '',
-    name: ''
+    name: '',
+    lang: 'en'
+  }
+
+  setLanguage(language) {
+    this.setState({lang: language});
   }
 
   joinRoom(id, name) {
@@ -82,7 +87,7 @@ class App extends Component {
   }
 
   render() {
-    const { name, redirect, roomID } = this.state;
+    const { name, redirect, roomID, lang } = this.state;
     if (redirect) {
       return <Redirect to={`/`} />;
     }
@@ -97,7 +102,13 @@ class App extends Component {
             <Header as='h1'> {this.state.name} Room</Header>
             <button onClick={() => this.leaveRoom()}>leave room</button>
             <Header as='h1'>Room</Header>
-            <Recorder id={this.state.id} name={this.state.name}/>
+            <Button.Group>
+              <Button active={lang === 'fr'} onClick={() => this.setLanguage('fr')}><Flag name='france'/></Button>
+              <Button active={lang === 'en'} onClick={() => this.setLanguage('en')}><Flag name='us' /></Button>
+              <Button active={lang === 'es'} onClick={() => this.setLanguage('es')}><Flag name='spain' /></Button>
+              <Button active={lang === 'de'} onClick={() => this.setLanguage('de')}><Flag name='germany' /></Button>
+            </Button.Group>
+            <Recorder id={this.state.id} name={this.state.name} lang={lang}/>
         </div>
     );
   }
