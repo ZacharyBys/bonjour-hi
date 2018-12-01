@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "prop-types": "^15.6.2",
+    "react-mic": "^12.2.3",
+    "react-speech-recognition": "^1.0.7",
+    "semantic-ui-css": "^2.4.1",
     "axios": "^0.18.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
