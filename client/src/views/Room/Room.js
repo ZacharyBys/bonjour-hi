@@ -43,8 +43,9 @@ class App extends Component {
     const { socket } = this.state;
     const urlParams = new URLSearchParams(window.location.search);
     const id = urlParams.get("id");
-    const name = urlParams.get("name");
-console.log(name);
+    let name = urlParams.get("name");
+
+    // client doesn't have a name yet
     if (name==null){
       Swal({
         type: 'question',
@@ -53,15 +54,18 @@ console.log(name);
         confirmButtonText:'Submit'
       }).then((result) => {
         if (result.value){
-          this.changeName(result.value);
+          this.setState({ id: id});
+          this.setState({ name: result.value });
+          this.joinRoom(id, result.value)
         }
       })
+    } else {
+      this.setState({ id: id });
+      this.setState({ name: name });
+      this.joinRoom(id, name)
     }
 
-    this.setState({ id: id });
-    this.setState({ name: name });
-    this.joinRoom(id, name)
-
+    // listen to socket connection
     socket.on("connect", function() {
       console.log("Websocket connected!");
     });
@@ -72,20 +76,20 @@ console.log(name);
   }
 
   render() {
-        const { name, redirect, roomID } = this.state;
+    const { name, redirect, roomID } = this.state;
     if (redirect) {
       return <Redirect to={`/`} />;
     }
     return (  
         <div>
           <p>share this url with all your friends!</p>
-          <p> http://localhost:3000/room?id{this.state.id}</p>
-           <CopyToClipboard text={`http://localhost:3000/room?id${this.state.id}`}
-            onCopy={() => this.setState({copied: true})}>
-            <Button>Copy to clipboard</Button>
-          </CopyToClipboard>
+          <p> http://localhost:3000/room?id={this.state.id}</p>
+            <CopyToClipboard text={`http://localhost:3000/room?id=${this.state.id}`}
+              onCopy={() => this.setState({copied: true})}>
+              <Button>Copy to clipboard</Button>
+            </CopyToClipboard>
             <Header as='h1'> {this.state.name} Room</Header>
- <button onClick={() => this.leaveRoom()}>leave room</button>
+            <button onClick={() => this.leaveRoom()}>leave room</button>
         </div>
     );
   }
