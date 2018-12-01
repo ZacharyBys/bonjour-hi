@@ -59,7 +59,7 @@ rendering(){
     return (
         <div className="home app-container">
           <BabelHeader></BabelHeader>
-          <Grid verticalAlign='middle' columns={2} centered className="app-container">
+          <Grid verticalAlign='middle' columns={1} centered className="app-container">
             <Grid.Row>
               <Grid.Column>
                 <div>
@@ -75,7 +75,6 @@ rendering(){
                   <Input onChange={event => this.changeRoomID(event)} placeholder="Room Code" style={{marginLeft: '15px'}}></Input>
                   <Button onClick={() => this.onJoinRoom()}> Join </Button>
                 </div>
-               
               </Grid.Column>
             </Grid.Row>
           </Grid>
