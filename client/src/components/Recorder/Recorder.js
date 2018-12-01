@@ -65,7 +65,7 @@ class Recorder extends Component {
         // dis in ISO-639
         recognition.lang = lang + '-CN';
 
-        if (finalTranscript) {
+        if (finalTranscript.length) {
 
             this.sendMessage(finalTranscript);
             resetTranscript();

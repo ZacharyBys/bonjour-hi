@@ -48,6 +48,7 @@ class App extends Component {
     socket.emit("leave", { room: id, user: name });
     this.setState({ redirect: true });
   }
+
   componentDidMount() {
     const { socket } = this.state;
     const urlParams = new URLSearchParams(window.location.search);
@@ -84,12 +85,13 @@ class App extends Component {
     });
 
     socket.on("receiveTranscript", function(data) {
-      console.log(data);
-      const { lang } = this.state;
-      googleTranslate.translate(data, lang, function(err, translation) {
+      if (data.user !== this.state.name) {
+        googleTranslate.translate(data.msg, this.state.lang, function(err, translation) {
           console.log(translation.translatedText);
-      });
-    });
+        });
+      }
+    }.bind(this)
+    );
   }
 
   render() {
