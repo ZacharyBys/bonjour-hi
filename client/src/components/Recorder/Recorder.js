@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
-import { Button, Header } from 'semantic-ui-react';
+import { Button, Header, Flag } from 'semantic-ui-react';
 import SpeechRecognition from 'react-speech-recognition';
 
 const propTypes = {
@@ -14,7 +14,8 @@ class Recorder extends Component {
     constructor(props) {
         super(props);
         this.state = {
-          record: true
+          record: true,
+          lang: 'en'
         }
     }
 
@@ -29,16 +30,21 @@ class Recorder extends Component {
         this.props.resetTranscript();
     }
 
+    setLanguage(language) {
+        this.setState({lang: language});
+        this.props.resetTranscript();
+    }
 
     render() {
         const { transcript, resetTranscript, recognition, browserSupportsSpeechRecognition, finalTranscript } = this.props;
+        const { lang, record } = this.state;
 
         if (!browserSupportsSpeechRecognition) {
             return null
         }
 
         // dis in ISO-639
-        recognition.lang = 'en-CN';
+        recognition.lang = lang + '-CN';
 
         if (finalTranscript) {
             console.log(finalTranscript);
@@ -48,10 +54,16 @@ class Recorder extends Component {
         return (
             <div>
                 <Button 
-                    color={this.state.record ? "green" : "white"} 
+                    color={record ? "green" : "white"} 
                     circular icon='microphone'
-                    onClick={this.state.record ? this.stopRecord : this.startRecord}
+                    onClick={record ? this.stopRecord : this.startRecord}
                 />
+                <Button.Group>
+                    <Button active={lang == 'fr'} onClick={() => this.setLanguage('fr')}><Flag name='france'/></Button>
+                    <Button active={lang == 'en'} onClick={() => this.setLanguage('en')}><Flag name='us' /></Button>
+                    <Button active={lang == 'es'} onClick={() => this.setLanguage('es')}><Flag name='spain' /></Button>
+                    <Button active={lang == 'de'} onClick={() => this.setLanguage('de')}><Flag name='germany' /></Button>
+                </Button.Group>
                 <Header>{transcript}</Header>
             </div>
         );
