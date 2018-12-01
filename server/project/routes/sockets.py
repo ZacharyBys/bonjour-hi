@@ -31,3 +31,13 @@ def on_leave(data):
 @socketio.on('status', namespace='/')
 def status():
     emit('status', {'msg': ROOMS[room]}, room=room)
+
+
+
+@socketio.on('originalTranscript', namespace='/')
+def originalTranscript(data):
+    user = data['user']
+    room = data['room']
+    transcript = data['transcript']
+    print(transcript)
+    emit('receiveTranscript', {'msg': f'{user} said {transcript}'}, room=room)

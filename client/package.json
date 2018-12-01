@@ -5,12 +5,20 @@
   "dependencies": {
     "@google-cloud/text-to-speech": "^0.3.0",
     "axios": "^0.18.0",
+    "google-translate": "^2.2.0",
+    "prop-types": "^15.6.2",
     "react": "^16.6.3",
+<<<<<<< HEAD
     "react-audio-player": "^0.11.0",
+=======
+>>>>>>> 922abd873fa39946b5c40339f2c83c3ac54993a6
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.6.3",
+    "react-mic": "^12.2.3",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
+    "react-speech-recognition": "^1.0.7",
+    "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.83.0",
     "socket.io-client": "^2.2.0",
     "sweetalert2": "^7.29.2"
@@ -29,5 +37,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "dotenv": "^6.1.0"
+  }
 }
