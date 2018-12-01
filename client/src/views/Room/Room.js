@@ -5,11 +5,14 @@ import Swal from 'sweetalert2';
 import axios from 'axios';
 import {Button} from 'semantic-ui-react';
 import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { Redirect } from 'react-router';
 
 class App extends Component {
 
   state = {
     socket: socketIOClient("http://127.0.0.1:5000/"),
+    id: '',
+    name: ''
   }
 
   joinRoom(id, name) {
@@ -29,6 +32,12 @@ class App extends Component {
   }
   changeName(name){
     this.setState({name: name});
+  }
+
+  leaveRoom() {
+    const { socket, id, name } = this.state;
+    socket.emit("leave", { room: id, user: name });
+    this.setState({ redirect: true });
   }
   componentDidMount() {
     const { socket } = this.state;
@@ -62,10 +71,11 @@ console.log(name);
     });
   }
 
-
-
   render() {
-    
+        const { name, redirect, roomID } = this.state;
+    if (redirect) {
+      return <Redirect to={`/`} />;
+    }
     return (  
         <div>
           <p>share this url with all your friends!</p>
@@ -75,6 +85,7 @@ console.log(name);
             <Button>Copy to clipboard</Button>
           </CopyToClipboard>
             <Header as='h1'> {this.state.name} Room</Header>
+ <button onClick={() => this.leaveRoom()}>leave room</button>
         </div>
     );
   }
