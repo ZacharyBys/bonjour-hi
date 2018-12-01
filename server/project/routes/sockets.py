@@ -40,4 +40,4 @@ def originalTranscript(data):
     room = data['room']
     transcript = data['transcript']
     print(transcript)
-    emit('receiveTranscript', {'msg': f'{user} said {transcript}'}, room=room)
+    emit('receiveTranscript', {'msg': transcript, 'user':user}, room=room)
