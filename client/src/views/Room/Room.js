@@ -12,7 +12,7 @@ import Recorder from '../../components/Recorder/Recorder';
 class App extends Component {
 
   state = {
-    socket: socketIOClient("http://127.0.0.1:5000/"),
+    socket: socketIOClient("http://localhost:5000/"),
     id: '',
     name: ''
   }
@@ -75,6 +75,10 @@ class App extends Component {
     socket.on("status", function(data) {
       console.log(data);
     });
+
+    socket.on("receiveTranscript", function(data) {
+      console.log(data);
+    });
   }
 
   render() {
@@ -93,7 +97,7 @@ class App extends Component {
             <Header as='h1'> {this.state.name} Room</Header>
             <button onClick={() => this.leaveRoom()}>leave room</button>
             <Header as='h1'>Room</Header>
-            <Recorder/>
+            <Recorder id={this.state.id} name={this.state.name}/>
         </div>
     );
   }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { PropTypes } from 'prop-types';
 import { Button, Header, Flag } from 'semantic-ui-react';
 import SpeechRecognition from 'react-speech-recognition';
+import socketIOClient from "socket.io-client";
 import 'google-translate';
 
 const propTypes = {
@@ -17,8 +18,9 @@ class Recorder extends Component {
     constructor(props) {
         super(props);
         this.state = {
+        socket: socketIOClient("http://localhost:5000/"),
           record: true,
-          lang: 'en'
+          lang: 'en',
         }
     }
 
@@ -32,11 +34,13 @@ class Recorder extends Component {
 
     startRecord = () => {
         this.props.startListening();
+        console.log("start recording");
         this.setState({record: true});
     }
 
     stopRecord = () => {
         this.props.abortListening();
+        console.log("stop recording");
         this.setState({record: false});
         this.props.resetTranscript();
     }
@@ -44,6 +48,15 @@ class Recorder extends Component {
     setLanguage(language) {
         this.setState({lang: language});
         this.props.resetTranscript();
+    }
+
+    sendMessage(transcript) {
+        const { socket, id, name } = this.props;
+        this.state.socket.emit("originalTranscript", {
+            room: id,
+            user: name,
+            transcript: transcript
+        });
     }
 
     render() {
@@ -58,7 +71,8 @@ class Recorder extends Component {
         recognition.lang = lang + '-CN';
 
         if (finalTranscript) {
-            console.log(finalTranscript);
+
+            this.sendMessage(finalTranscript);
             resetTranscript();
         }
 

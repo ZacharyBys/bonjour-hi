@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import { Header } from 'semantic-ui-react';
-import { Button } from 'semantic-ui-react';
-import { Input } from 'semantic-ui-react';
+import { Header, Button, Grid, Input } from 'semantic-ui-react';
 import * as axios from 'axios';
 import { Redirect } from 'react-router';
 
@@ -57,11 +55,26 @@ rendering(){
       return <Redirect to={`/room?id=${roomID}&name=${name}`} />;
     }
     return (
-        <div>
-            <Header as='h1'>Connectabel Home</Header>
-            {this.rendering()}
-            <Button onClick={() => this.toggle(false)}> Create Room </Button>
-            <Button onClick={() => this.toggle(true)}> Join Room </Button> 
+        <div className="home">
+          <Header style={{textAlign: 'center', fontSize: '5rem', padding: '55px 0px', color: '#5C6AC4'}} as='h1'>Babel</Header>
+          <Grid verticalAlign='middle' columns={4} centered>
+            <Grid.Row>
+              <Grid.Column>
+                <div>
+                  <h3>Create a room</h3>
+                  <Input onChange={event => this.changeName(event)} placeholder="Name"></Input>
+                  <Button onClick={() => this.onCreateRoom()}> Create </Button>
+                </div>
+                <br />
+                <div>
+                  <h3>Join a room</h3>
+                  <Input onChange={event => this.changeName(event)} placeholder="Name"></Input>
+                  <Input onChange={event => this.changeRoomID(event)} placeholder="Room Code" style={{marginLeft: '15px'}}></Input>
+                  <Button onClick={() => this.onJoinRoom()}> Join </Button>
+                </div>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
         </div>
     );
   }
