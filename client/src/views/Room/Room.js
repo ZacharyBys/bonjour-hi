@@ -16,7 +16,7 @@ import flages from '../../assets/es.png';
 import * as axios from 'axios';
 import 'google-translate';
 
-const accessToken = "ya29.GltmBj13NJ1FdI18DdVupkby11f6T2ZHX7bWwsDeOmoOTsK7Gnuwhf2J3JtqMYqLpcp55L1NHKkwwJ88I7qMoLFoKM1LkC6eQXkrX3rQqwM-mYshzHUiQTEzXejm";
+const accessToken = "ya29.GltmBnjjqjXWr9hOQgb07hZPBtAlRgWRfTBB-yn2A3srb-8EQ6pKxBbUA3DvqCB8YpwDnnBiHujXjEMdgpb-24PuCfvxfG72DhmBRJLmjhX6SoRiNt76uk-rJ4Kh";
 
 const googleTranslate = require('google-translate')(process.env.REACT_APP_API_KEY);
 
@@ -252,11 +252,26 @@ class App extends Component {
 
   keepPoll = () => {
     const { id, name } = this.state;
+<<<<<<< HEAD
     const imageSrc = this.webcam.getScreenshot();
     this.state.socket.emit("sendFrames", { img: imageSrc, room: id, user: name });
     setTimeout(this.keepPoll, 250);
+=======
+    if (this.webcam !== null) {
+      const imageSrc = this.webcam.getScreenshot();
+      this.state.socket.emit("sendFrames", { img: imageSrc, room: id, user: name });
+      setTimeout(this.keepPoll, 500);
+    }
+>>>>>>> a9d04b3e90f930866b02e347c7b95e4302fbc10f
   }
 
+  componentWillUnmount = () => {             
+    if (this.keepPoll) {                               
+        clearTimeout(this.keepPoll);   
+        this.keepPoll = 0;                
+    }                                     
+  };
+  
   clickCopy() {
     this.setState({copied: true})
     const toast = Swal.mixin({
