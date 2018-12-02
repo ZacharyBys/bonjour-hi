@@ -15,7 +15,7 @@ import flages from '../../assets/es.png';
 import * as axios from 'axios';
 import 'google-translate';
 
-const accessToken = "ya29.GltlBlWfzsHiHu3BS-PL2oiD1Ccmlw0gR-QujaMkaQrWaRXySfo72N_BoQ7K9buaWnks7LVl2gtXhI5QbUGj3uoTR5MXPen-hx3A5Cdxj2lBLkH7odjisnOcQJd3";
+const accessToken = "ya29.GltmBj13NJ1FdI18DdVupkby11f6T2ZHX7bWwsDeOmoOTsK7Gnuwhf2J3JtqMYqLpcp55L1NHKkwwJ88I7qMoLFoKM1LkC6eQXkrX3rQqwM-mYshzHUiQTEzXejm";
 
 const googleTranslate = require('google-translate')(process.env.REACT_APP_API_KEY);
 
@@ -65,7 +65,7 @@ class App extends Component {
       googleTranslate.translate(data.msg, this.state.lang, (err, translation) => {
         // console.log(translation.translatedText);
 
-        let newMessages = this.state.messages.concat({name:data.user, message: translation.translatedText})
+        let newMessages = this.state.messages.concat({name:data.user, message: translation.translatedText, language: data.language})
 
         // let tmp = this.state.messages.map(x => x);
         
@@ -101,25 +101,27 @@ class App extends Component {
             'Authorization': 'Bearer ' + accessToken
           }
         }
-        axios.post('https://texttospeech.googleapis.com/v1beta1/text:synthesize', { 
-          'input':{
-            'text': text
-          },
-          'voice':{
-            'languageCode':spokenLanguage,
-            'name':spokenLanguage + '-Standard-A',
-            'ssmlGender':'FEMALE'
-          },
-          'audioConfig':{
-            'audioEncoding':'MP3'
-          }
-        }, config)
-        .then((response) => {
-          this.setState({base64File: response.data.audioContent});
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+        if (data.user !== this.state.name) {
+          axios.post('https://texttospeech.googleapis.com/v1beta1/text:synthesize', { 
+            'input':{
+              'text': text
+            },
+            'voice':{
+              'languageCode':spokenLanguage,
+              'name':spokenLanguage + '-Standard-A',
+              'ssmlGender':'FEMALE'
+            },
+            'audioConfig':{
+              'audioEncoding':'MP3'
+            }
+          }, config)
+          .then((response) => {
+            this.setState({base64File: response.data.audioContent});
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+        }
       });
     }
   }
@@ -273,7 +275,7 @@ class App extends Component {
                         :
                         <div className="msg__others__wrapper">
                           <Message compact key={el.message} className="msg__others__body">
-                            {el.name}:  {el.message}
+                            {el.name + ' ('+ el.language + ')'}:  {el.message}
                           </Message>
                         </div>
                     })
