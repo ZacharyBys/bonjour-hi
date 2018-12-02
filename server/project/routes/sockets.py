@@ -52,3 +52,11 @@ def originalTranscript(data):
     language = data['language']
     print(transcript)
     emit('receiveTranscript', {'msg': transcript, 'user':user, 'language':language}, room=room)
+
+
+@socketio.on('sendFrames', namespace='/')
+def sendFrames(data):
+    user = data['user']
+    room = data['room']
+    img = data['img']
+    emit('receiveFrames', {'img': img, 'user':user}, room=room)
