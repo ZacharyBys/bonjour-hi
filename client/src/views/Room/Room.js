@@ -64,8 +64,26 @@ class App extends Component {
     if (data.user !== this.state.name || true) {
       googleTranslate.translate(data.msg, this.state.lang, (err, translation) => {
         // console.log(translation.translatedText);
+        var receivedLanguage = 'English';
 
-        let newMessages = this.state.messages.concat({name:data.user, message: translation.translatedText, language: data.language})
+        switch (data.language) {
+          case 'en':
+            receivedLanguage = 'English';
+              break;
+          case 'de':
+            receivedLanguage = 'Deutsch';
+              break;
+          case 'es':
+            receivedLanguage = 'Español';
+              break;
+          case 'fr':
+            receivedLanguage = 'Français';
+              break;
+          default: 
+            receivedLanguage = 'English';
+      }
+
+        let newMessages = this.state.messages.concat({name:data.user, message: translation.translatedText, language: receivedLanguage})
 
         // let tmp = this.state.messages.map(x => x);
         
