@@ -42,7 +42,8 @@ class Recorder extends Component {
         this.state.socket.emit("originalTranscript", {
             room: id,
             user: name,
-            transcript: transcript
+            transcript: transcript,
+            language: this.state.lang
         });
     }
 
