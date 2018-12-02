@@ -8,6 +8,7 @@ import {CopyToClipboard} from 'react-copy-to-clipboard';
 import { Redirect } from 'react-router';
 import Recorder from '../../components/Recorder/Recorder';
 import BabelHeader from '../../components/BabelHeader/BabelHeader';
+import Webcam from "react-webcam";
 import flagfr from '../../assets/fr.png';
 import flagen from '../../assets/en.png';
 import flagde from '../../assets/de.png';
@@ -28,6 +29,8 @@ class App extends Component {
     name: '',
     lang: 'en',
     users: '',
+    testFile: '',
+    usersPhotos: {},
     messages: [
       {
         name: 'Bob',
@@ -48,6 +51,17 @@ class App extends Component {
     ]
   }
 
+  setRef = webcam => {
+    this.webcam = webcam;
+  };
+  
+  capture = () => {
+    const { id, name } = this.state;
+    const imageSrc = this.webcam.getScreenshot();
+    this.state.socket.emit("sendFrames", { img: imageSrc, room: id, user: name });
+
+  };
+
   setLanguage(language) {
     this.setState({lang: language});
   }
@@ -58,8 +72,8 @@ class App extends Component {
   scrollDown(){
     var elem = document.getElementById('messages-container');
     elem.scrollTop = elem.scrollHeight;
-
   }
+
   textToTranslatedVoice(data){
     if (data.user !== this.state.name || true) {
       googleTranslate.translate(data.msg, this.state.lang, (err, translation) => {
@@ -156,7 +170,7 @@ class App extends Component {
     let name = urlParams.get("name");
 
     // client doesn't have a name yet
-    if (name==null){
+    if (name==null) {
       Swal({
         type: 'question',
         text: 'Please enter your name',
@@ -199,6 +213,25 @@ class App extends Component {
         this.textToTranslatedVoice(data)
       }
     );
+
+    socket.on("receiveFrames", (data) => {
+      console.log(data)
+      this.setState({testFile: data.img});
+      // this.setState({...this.state.usersPhotos, data['user']: data['img']});
+
+      // data.user = chris, data.img = base64444
+
+      // this.state.users.map(x => {})
+    });
+
+    this.keepPoll();
+  }
+
+  keepPoll = () => {
+    const { id, name } = this.state;
+    const imageSrc = this.webcam.getScreenshot();
+    this.state.socket.emit("sendFrames", { img: imageSrc, room: id, user: name });
+    setTimeout(this.keepPoll, 500);
   }
 
   clickCopy() {
@@ -247,7 +280,17 @@ class App extends Component {
                 </div>
                 <Grid centered columns={4}>
                   <div className="grid-column-center-aligned">
-                    <Image src="/skype-example.png" height='300'></Image>
+                    <Webcam 
+                      audio={false}
+                      height={150}
+                      ref={this.setRef}
+                      screenshotFormat="image/jpeg"
+                      width={150}  
+                    />
+                    {/* <button onClick={this.capture}>Capture photo</button> */}
+
+                    <Image src={this.state.testFile} height='150'></Image>
+
                     <Button.Group className="language-buttons">
                       <Button active={lang === 'fr'} onClick={() => this.setLanguage('fr')}><Image src={flagfr} size='mini'/></Button>
                       <Button active={lang === 'en'} onClick={() => this.setLanguage('en')}><Image src={flagen} size='mini'/></Button>
