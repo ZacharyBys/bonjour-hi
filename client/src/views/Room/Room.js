@@ -249,11 +249,20 @@ class App extends Component {
 
   keepPoll = () => {
     const { id, name } = this.state;
-    const imageSrc = this.webcam.getScreenshot();
-    this.state.socket.emit("sendFrames", { img: imageSrc, room: id, user: name });
-    setTimeout(this.keepPoll, 500);
+    if (this.webcam !== null) {
+      const imageSrc = this.webcam.getScreenshot();
+      this.state.socket.emit("sendFrames", { img: imageSrc, room: id, user: name });
+      setTimeout(this.keepPoll, 500);
+    }
   }
 
+  componentWillUnmount = () => {             
+    if (this.keepPoll) {                               
+        clearTimeout(this.keepPoll);   
+        this.keepPoll = 0;                
+    }                                     
+  };
+  
   clickCopy() {
     this.setState({copied: true})
     const toast = Swal.mixin({
