@@ -27,6 +27,7 @@ class App extends Component {
     id: '',
     name: '',
     lang: 'en',
+    users: '',
     messages: [
       {
         name: 'Bob',
@@ -179,7 +180,8 @@ class App extends Component {
       console.log("Websocket connected!");
     });
 
-    socket.on("status", function(data) {
+    socket.on("status", (data) => {
+      this.setState({users: data.users})
       const toast = Swal.mixin({
         toast: true,
         position: 'top',
@@ -280,6 +282,10 @@ class App extends Component {
               </Grid.Column>
             </Grid.Row>
           </Grid>
+        <div className="users">
+          <h3>Users: {this.state.users}</h3>
+        </div>
+
         <ReactAudioPlayer
             src={'data:audio/mp3;base64,'+this.state.base64File}
             autoPlay

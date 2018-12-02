@@ -8,9 +8,6 @@ from pathlib import Path
 # setup extensions
 socketio = SocketIO()
 
-# global variables
-ROOMS = {}
-
 
 def create_app(script_info=None):
 
