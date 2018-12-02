@@ -73,14 +73,17 @@ class Recorder extends Component {
         }
 
         return (
-            <React.Fragment>
+            <div>
                 <Button 
+                    size="huge"
                     color={record ? "green" : "grey"} 
                     circular icon='microphone'
                     onClick={record ? this.stopRecord : this.startRecord}
                     className="recorder-button"
-                />
-            </React.Fragment>
+                /> 
+                <br />
+                { record ? 'ON' : "OFF" }
+            </div>
         );
     }
 }
