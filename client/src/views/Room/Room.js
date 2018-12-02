@@ -30,7 +30,7 @@ class App extends Component {
     lang: 'en',
     users: '',
     testFile: '',
-    usersPhotos: {},
+    userPhotos: {},
     messages: [
       {
         name: 'Bob',
@@ -235,13 +235,16 @@ class App extends Component {
     );
 
     socket.on("receiveFrames", (data) => {
-      console.log(data)
-      this.setState({testFile: data.img});
-      // this.setState({...this.state.usersPhotos, data['user']: data['img']});
-
-      // data.user = chris, data.img = base64444
-
-      // this.state.users.map(x => {})
+      if (data.user !== this.state.name) {
+        const userPhotos = this.state.userPhotos;
+        userPhotos[data.user] = data.img;
+        this.setState({userPhotos: userPhotos});
+        // this.setState({...this.state.usersPhotos, data['user']: data['img']});
+  
+        // data.user = chris, data.img = base64444
+  
+        // this.state.users.map(x => {})
+      }
     });
 
     this.keepPoll();
@@ -251,7 +254,7 @@ class App extends Component {
     const { id, name } = this.state;
     const imageSrc = this.webcam.getScreenshot();
     this.state.socket.emit("sendFrames", { img: imageSrc, room: id, user: name });
-    setTimeout(this.keepPoll, 500);
+    setTimeout(this.keepPoll, 250);
   }
 
   clickCopy() {
@@ -271,7 +274,7 @@ class App extends Component {
   }
 
   render() {
-    const { name, redirect, roomID, lang } = this.state;
+    const { name, redirect, roomID, lang, userPhotos } = this.state;
     if (redirect) {
       return <Redirect to={`/`} />;
     }
@@ -308,8 +311,11 @@ class App extends Component {
                       width={150}  
                     />
                     {/* <button onClick={this.capture}>Capture photo</button> */}
-
-                    <Image src={this.state.testFile} height='150'></Image>
+                    {
+                      Object.keys(userPhotos).map((key, index) => ( 
+                        <Image key={index} src={userPhotos[key]} height='150'></Image>
+                      ))
+                    }
 
                     <Button.Group className="language-buttons">
                       <Button active={lang === 'fr'} onClick={() => this.setLanguage('fr')}><Image src={flagfr} size='mini'/></Button>
