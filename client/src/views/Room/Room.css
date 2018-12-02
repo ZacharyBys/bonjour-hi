@@ -38,7 +38,6 @@
 .icon.button-icon{
     cursor: pointer;
 }
-
 .msg__others__wrapper {
     display: flex;
 }
@@ -68,5 +67,15 @@
     justify-content: space-between !important;
 }
 .users {
-    padding: 10px;
+    position: absolute;
+    bottom:0;
+    padding: 15px;
+}
+.flex-container{
+    display: flex;
+    justify-content: space-evenly;
+}
+.grid-column-center-aligned{
+    position: relative;
+    padding-top: 90px;
 }

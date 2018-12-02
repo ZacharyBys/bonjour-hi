@@ -23,7 +23,7 @@ def on_leave(data):
         ROOMS[room].remove(user)
     unique_user = list(set(ROOMS[room]))
     leave_room(room)
-    emit('status', {'msg': f'{user} has left the room.', 'users': ', '.join(unique_user)}, room=room)
+    emit('status', {'msg': f'{user} has left the room.', 'users': unique_user}, room=room)
 
 
 @socketio.on('join', namespace='/')
@@ -37,7 +37,7 @@ def on_leave(data):
     ROOMS[room].append(user)
     unique_user = list(set(ROOMS[room]))
     join_room(room)
-    emit('status', {'msg': f'{user} has joined the room.', 'users': ', '.join(unique_user)}, room=room)
+    emit('status', {'msg': f'{user} has joined the room.', 'users': unique_user}, room=room)
 
 
 @socketio.on('status', namespace='/')

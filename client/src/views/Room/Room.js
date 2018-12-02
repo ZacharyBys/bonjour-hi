@@ -28,7 +28,7 @@ class App extends Component {
     id: '',
     name: '',
     lang: 'en',
-    users: '',
+    users: [],
     testFile: '',
     userPhotos: {},
     messages: [
@@ -301,22 +301,27 @@ class App extends Component {
                   <Button color='yellow' onClick={() => this.leaveRoom()}>Leave room</Button>
                   </div>
                 </div>
-                <Grid centered columns={4}>
+                <Grid columns={2} centered>
+                <Grid.Column>
                   <div className="grid-column-center-aligned">
                     <Webcam 
                       audio={false}
                       height={150}
                       ref={this.setRef}
                       screenshotFormat="image/jpeg"
+                      screenshotWidth={120}
                       width={150}  
                     />
                     {/* <button onClick={this.capture}>Capture photo</button> */}
+                    <div className="flex-container">
                     {
-                      Object.keys(userPhotos).map((key, index) => ( 
-                        <Image key={index} src={userPhotos[key]} height='150'></Image>
-                      ))
+                      this.state.users.map((x, index) => {
+                        if (x in userPhotos) {
+                          return <Image key={index} src={userPhotos[x]} height='120'></Image>
+                        }
+                      })
                     }
-
+                    </div>
                     <Button.Group className="language-buttons">
                       <Button active={lang === 'fr'} onClick={() => this.setLanguage('fr')}><Image src={flagfr} size='mini'/></Button>
                       <Button active={lang === 'en'} onClick={() => this.setLanguage('en')}><Image src={flagen} size='mini'/></Button>
@@ -327,6 +332,7 @@ class App extends Component {
                       <Recorder id={this.state.id} name={this.state.name} lang={lang}/>
                     </div>
                   </div>
+                  </Grid.Column>
                 </Grid>
               </Grid.Column>
               <Grid.Column width={4} style={{maxHeight: '90vh', overflowY: 'scroll'}} id="messages-container">
@@ -335,13 +341,13 @@ class App extends Component {
                     this.state.messages.map((el, index) => {
                       return el.name.toLowerCase() === this.state.name.toLowerCase() ? 
                         <div className="msg__you__wrapper">
-                          <Message compact key={el.message} className="msg__you__body">
+                          <Message compact key={index} className="msg__you__body">
                             {el.message}
                           </Message>
                         </div>
                         :
                         <div className="msg__others__wrapper">
-                          <Message compact key={el.message} className="msg__others__body">
+                          <Message compact key={index} className="msg__others__body">
                             {el.name + ' ('+ el.language + ')'}:  {el.message}
                           </Message>
                         </div>
@@ -350,10 +356,11 @@ class App extends Component {
                 </Container>
               </Grid.Column>
             </Grid.Row>
+            <div className="users">
+              <h3>Users: {this.state.users.join(', ')}</h3>
+            </div>
           </Grid>
-        <div className="users">
-          <h3>Users: {this.state.users}</h3>
-        </div>
+
 
         <ReactAudioPlayer
             src={'data:audio/mp3;base64,'+this.state.base64File}
