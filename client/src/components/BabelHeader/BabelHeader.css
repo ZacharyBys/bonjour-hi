@@ -1,6 +1,5 @@
 .ui.header.babel-header{
-    text-align: left;
-    font-size: 3rem;
+    font-size: 4rem;
     color: #5C6AC4;
-    font-style: italic;
+    font-family: 'Caveat', cursive;
 }

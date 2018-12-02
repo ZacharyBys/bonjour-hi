@@ -13,7 +13,6 @@ const propTypes = {
     stopListening: PropTypes.func,
     browserSupportsSpeechRecognition: PropTypes.bool
 }
-
 class Recorder extends Component {
     constructor(props) {
         super(props);

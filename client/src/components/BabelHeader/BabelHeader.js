@@ -5,7 +5,7 @@ import { Header} from 'semantic-ui-react';
 class BabelHeader extends Component {
     render() {
         return (
-            <Header as='h2' className="babel-header">Babel</Header>
+            <Header as='h2' className="babel-header">Bonjour-Hi</Header>
         );
     }
 }

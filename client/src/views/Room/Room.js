@@ -31,24 +31,7 @@ class App extends Component {
     users: [],
     testFile: '',
     userPhotos: {},
-    messages: [
-      {
-        name: 'Bob',
-        message: 'this is a dump test'
-      },
-      {
-        name: 'Chris',
-        message: 'this is a dump test2'
-      },
-      {
-        name: 'Kevin',
-        message: 'this is a dump test3'
-      },
-      {
-        name: 'Bob',
-        message: 'this is a dump test5'
-      }
-    ]
+    messages: []
   }
 
   setRef = webcam => {
@@ -252,17 +235,11 @@ class App extends Component {
 
   keepPoll = () => {
     const { id, name } = this.state;
-<<<<<<< HEAD
-    const imageSrc = this.webcam.getScreenshot();
-    this.state.socket.emit("sendFrames", { img: imageSrc, room: id, user: name });
-    setTimeout(this.keepPoll, 250);
-=======
     if (this.webcam !== null) {
       const imageSrc = this.webcam.getScreenshot();
       this.state.socket.emit("sendFrames", { img: imageSrc, room: id, user: name });
       setTimeout(this.keepPoll, 500);
     }
->>>>>>> a9d04b3e90f930866b02e347c7b95e4302fbc10f
   }
 
   componentWillUnmount = () => {             
