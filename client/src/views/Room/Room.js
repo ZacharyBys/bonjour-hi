@@ -43,83 +43,6 @@ class App extends Component {
       {
         name: 'Bob',
         message: 'this is a dump test5'
-      },
-      {
-        name: 'Bob',
-        message: 'this is a dump test'
-      },
-      {
-        name: 'Chris',
-        message: 'this is a dump test2'
-      },
-      {
-        name: 'Kevin',
-        message: 'this is a dump test3'
-      },
-      {
-        name: 'Bob',
-        message: 'this is a dump test5'
-      },
-      {
-        name: 'Bob',
-        message: 'this is a dump test'
-      },
-      {
-        name: 'Chris',
-        message: 'this is a dump test2'
-      },
-      {
-        name: 'Kevin',
-        message: 'this is a dump test3'
-      },
-      {
-        name: 'Bob',
-        message: 'this is a dump test5'
-      },      {
-        name: 'Bob',
-        message: 'this is a dump test'
-      },
-      {
-        name: 'Chris',
-        message: 'this is a dump test2'
-      },
-      {
-        name: 'Kevin',
-        message: 'this is a dump test3'
-      },
-      {
-        name: 'Bob',
-        message: 'this is a dump test5'
-      },      {
-        name: 'Bob',
-        message: 'this is a dump test'
-      },
-      {
-        name: 'Chris',
-        message: 'this is a dump test2'
-      },
-      {
-        name: 'Kevin',
-        message: 'this is a dump test3'
-      },
-      {
-        name: 'Bob',
-        message: 'this is a dump test5'
-      },      {
-        name: 'Bob',
-        message: 'this is a dump test'
-      },
-      {
-        name: 'Chris',
-        message: 'this is a dump test2'
-      },
-      {
-        name: 'Kevin',
-        message: 'this is a dump test3'
-      },
-      {
-        name: 'Bob',
-        message: 'this is a dump test5'
       }
     ]
   }
@@ -130,6 +53,11 @@ class App extends Component {
 
   buttonClick(){
     console.log('hi');
+  }
+  scrollDown(){
+    var elem = document.getElementById('messages-container');
+    elem.scrollTop = elem.scrollHeight;
+
   }
   textToTranslatedVoice(data){
     if (data.user !== this.state.name || true) {
@@ -144,6 +72,7 @@ class App extends Component {
         this.setState({
           messages: newMessages
         })
+        this.scrollDown();
         console.log(this.state.messages);
         const text = translation.translatedText;
         let context = new AudioContext();
@@ -329,8 +258,8 @@ class App extends Component {
                   </div>
                 </Grid>
               </Grid.Column>
-              <Grid.Column width={4} style={{maxHeight: '90vh', overflowY: 'scroll'}}>
-                <Container>
+              <Grid.Column width={4} style={{maxHeight: '90vh', overflowY: 'scroll'}} id="messages-container">
+                <Container >
                   {
                     this.state.messages.map((el, index) => {
                       return el.name.toLowerCase() === this.state.name.toLowerCase() ? 
