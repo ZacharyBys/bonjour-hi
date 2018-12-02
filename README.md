@@ -6,6 +6,8 @@ Bonjour-hi is a multilingual video chat room platform, allowing you to video cha
 
 You can create video chat rooms, and invite other users to join them. Each user picks their own language, and they hear all of the other users, translated to their own language! You can have a chatroom with someone speaking German, someone speaking English, and someone speaking French, and they'll all be hearing the conversation in their own language, allowing for easy communication with anyone.
 
+![Screenshot of App](https://i.imgur.com/cO4EIvq.png)
+
 ## Backend
 
 - Flask server is located at `/server/`
