@@ -28,6 +28,8 @@ def on_leave(data):
 
 @socketio.on('join', namespace='/')
 def on_leave(data):
+    global ROOMS
+
     user = data['user']
     room = data['room']
 
@@ -42,7 +44,9 @@ def on_leave(data):
 
 @socketio.on('status', namespace='/')
 def status():
-    emit('status', {'msg': ROOMS[room]}, room=room)
+    global ROOMS
+    unique_user = list(set(ROOMS[room]))
+    emit('status', {'msg': ROOMS[room], 'users': unique_user}, room=room)
 
 @socketio.on('originalTranscript', namespace='/')
 def originalTranscript(data):

@@ -16,7 +16,7 @@ import flages from '../../assets/es.png';
 import * as axios from 'axios';
 import 'google-translate';
 
-const accessToken = "ya29.GltmBnjjqjXWr9hOQgb07hZPBtAlRgWRfTBB-yn2A3srb-8EQ6pKxBbUA3DvqCB8YpwDnnBiHujXjEMdgpb-24PuCfvxfG72DhmBRJLmjhX6SoRiNt76uk-rJ4Kh";
+const accessToken = "ya29.GltmBkpJRYDH6VZAivO0r4Go54xFPYo06oG5lGB7Y5LRSLa1fTHGx_0GbNoXAd6dLoMu6SF8MmZRp-onD-XbaMWfuhzGRKRth2I4DVfyL9qOcYhCAs47H0Kb2KO1";
 
 const googleTranslate = require('google-translate')(process.env.REACT_APP_API_KEY);
 
