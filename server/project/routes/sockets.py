@@ -7,11 +7,11 @@ ROOMS = {}
 
 @socketio.on('connect', namespace='/')
 def test_connect():
-    print('Client connect')
+    pass
 
 @socketio.on('disconnect', namespace='/')
 def test_disconnect():
-    print('Client disconnected')
+    pass
 
 @socketio.on('leave', namespace='/')
 def on_leave(data):
@@ -50,7 +50,6 @@ def originalTranscript(data):
     room = data['room']
     transcript = data['transcript']
     language = data['language']
-    print(transcript)
     emit('receiveTranscript', {'msg': transcript, 'user':user, 'language':language}, room=room)
 
 
